@@ -30,7 +30,6 @@ class ImageBlur
 
 	def blur_image
 		pixl_locus = self.locate_pixl
-		print pixl_locus
 		puts
 
 		pixl_locus.each do |row, pixl|
