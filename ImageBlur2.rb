@@ -5,7 +5,6 @@ class ImageBlur
 		@image = image
 		@width = @image[1].length - 1
 		@height = @image.length - 1
-		puts "image width: #{width}"
 	end
 
 	def output_image
