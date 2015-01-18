@@ -5,9 +5,7 @@ class ImageBlur
 
 	def output_image
 		@image.each do |row|
-			row.each do |pixl|
-				print pixl
-			end
+			print row.join("")
 			puts
 		end
 	end
