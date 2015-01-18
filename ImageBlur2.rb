@@ -3,8 +3,8 @@ class ImageBlur
 
 	def initialize(image)
 		@image = image
-		width = @image[1].length - 1
-		height = @image.length - 1
+		@width = @image[1].length - 1
+		@height = @image.length - 1
 		puts "image width: #{width}"
 	end
 
@@ -34,14 +34,10 @@ class ImageBlur
 		puts
 
 		pixl_locus.each do |row, pixl|
-			puts "pixl_num: #{pixl}"
-			puts "row_num: #{row}"
 			can_move_left = pixl != 0
 			can_move_right = pixl != width
 			can_move_up = row != 0
 			can_move_down = row != height
-
-			puts "can move right? #{can_move_right}"
 			
 			@image[row][pixl - 1] = 1 if can_move_left
 			@image[row][pixl + 1] = 1 if can_move_right
@@ -90,7 +86,7 @@ image.output_image
 puts
 
 image = ImageBlur.new([
-  [0, 0, 0, 0],
+  [1, 0, 0, 0],
   [0, 0, 0, 0],
   [0, 0, 0, 0],
   [0, 0, 0, 0],
