@@ -1,6 +1,11 @@
 class ImageBlur
+	attr_reader :width, :height
+
 	def initialize(image)
 		@image = image
+		width = @image[1].length - 1
+		height = @image.length - 1
+		puts "image width: #{width}"
 	end
 
 	def output_image
@@ -25,54 +30,40 @@ class ImageBlur
 
 	def blur_image
 		pixl_locus = self.locate_pixl
+		print pixl_locus
+		puts
+
 		pixl_locus.each do |row, pixl|
-		blur_action = {
-			:up => @image[row - 1][pixl] = 1,
-			:down => @image[row + 1][pixl] = 1,
-			:left => @image[row][pixl - 1] = 1,
-			:right => @image[row][pixl + 1] = 1
-		}
-			if row == 0
-				if pixl == 0 
-					blur_action[:down] 
-					blur_action[:right]
-				elsif @image[pixl + 1].nil?
-					blur_action[:down]
-					blur_action[:left]
-				else
-					blur_action[:down]
-					blur_action[:right]
-					blur_action[:left]
-				end
-			elsif @image[row + 1].nil?
-				if pixl == 0 
-					blur_action[:up]
-					blur_action[:right]
-				elsif @image[pixl + 1].nil?
-					blur_action[:up]
-					blur_action[:left]
-				else
-					blur_action[:up]
-					blur_action[:right]
-					blur_action[:left]
-				end
-			elsif pixl == 0
-				blur_action[:up]
-				blur_action[:down]
-				blur_action[:right]
-			elsif @image[row][pixl + 1].nil?
-				blur_action[:up]
-				blur_action[:down]
-				blur_action[:left]
-			else
-				blur_action[:up]
-				blur_action[:down]
-				blur_action[:right]
-				blur_action[:left]
-			end
+			puts "pixl_num: #{pixl}"
+			puts "row_num: #{row}"
+			can_move_left = pixl != 0
+			can_move_right = pixl != width
+			can_move_up = row != 0
+			can_move_down = row != height
+
+			puts "can move right? #{can_move_right}"
+			
+			@image[row][pixl - 1] = 1 if can_move_left
+			@image[row][pixl + 1] = 1 if can_move_right
+			@image[row - 1][pixl] = 1 if can_move_up
+			@image[row + 1][pixl] = 1 if can_move_down
 		end
+
 	end
+
 end
+
+
+image = ImageBlur.new([
+  [0, 0, 0, 0],
+  [0, 1, 0, 0],
+  [0, 0, 1, 0],
+  [0, 0, 0, 0]
+])
+
+image.blur_image
+image.output_image
+puts
 
 image = ImageBlur.new([
   [0, 0, 0, 0],

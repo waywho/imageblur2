@@ -30,51 +30,16 @@ class ImageBlur
 	def blur_image
 		pixl_locus = self.locate_pixl
 
-
 		pixl_locus.each do |row, pixl|
 			can_move_left = pixl != 0
 			can_move_right = pixl != width
 			can_move_up = row != 0
 			can_move_down = row != height
 			
-			if row == 0
-				if pixl == 0 
-					@image[row + 1][pixl] = 1
-					@image[row][pixl + 1] = 1
-				elsif @image[pixl + 1].nil?
-					@image[row + 1][pixl] = 1
-					@image[row][pixl - 1] = 1
-				else
-					@image[row + 1][pixl] = 1
-					@image[row][pixl - 1] = 1
-					@image[row][pixl + 1] = 1
-				end
-			elsif @image[row + 1].nil?
-				if pixl == 0 
-					@image[row - 1][pixl] = 1
-					@image[row][pixl + 1] = 1
-				elsif @image[row][pixl + 1].nil?
-					@image[row - 1][pixl] = 1
-					@image[row][pixl - 1] = 1
-				else
-					@image[row - 1][pixl] = 1
-					@image[row][pixl - 1] = 1
-					@image[row][pixl + 1] = 1
-				end
-			elsif pixl == 0
-				@image[row - 1][pixl] = 1
-				@image[row + 1][pixl] = 1
-				@image[row][pixl + 1] = 1
-			elsif @image[row][pixl + 1].nil?
-				@image[row - 1][pixl] = 1
-				@image[row + 1][pixl] = 1
-				@image[row][pixl - 1] = 1
-			else
-				@image[row - 1][pixl] = 1
-				@image[row + 1][pixl] = 1
-				@image[row][pixl - 1] = 1
-				@image[row][pixl + 1] = 1
-			end
+			@image[row][pixl - 1] = 1 if can_move_left
+			@image[row][pixl + 1] = 1 if can_move_right
+			@image[row - 1][pixl] = 1 if can_move_up
+			@image[row + 1][pixl] = 1 if can_move_down
 		end
 	end
 
