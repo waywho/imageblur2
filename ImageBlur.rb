@@ -1,10 +1,6 @@
 class ImageBlur
-	attr_reader :width, :height
-
 	def initialize(image)
 		@image = image
-		width = @image[1].length - 1
-		height = @image.length - 1
 	end
 
 	def output_image
@@ -29,14 +25,7 @@ class ImageBlur
 
 	def blur_image
 		pixl_locus = self.locate_pixl
-
-
 		pixl_locus.each do |row, pixl|
-			can_move_left = pixl != 0
-			can_move_right = pixl != width
-			can_move_up = row != 0
-			can_move_down = row != height
-			
 			if row == 0
 				if pixl == 0 
 					@image[row + 1][pixl] = 1
