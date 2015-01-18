@@ -5,9 +5,7 @@ class ImageBlur
 
 	def output_image
 		@image.each do |row|
-			row.each do |pixl|
-				print pixl
-			end
+			print row.join("")
 			puts
 		end
 	end
@@ -28,60 +26,53 @@ class ImageBlur
 	def blur_image
 		pixl_locus = self.locate_pixl
 		pixl_locus.each do |row, pixl|
+		blur_action = {
+			:up => @image[row - 1][pixl] = 1,
+			:down => @image[row + 1][pixl] = 1,
+			:left => @image[row][pixl - 1] = 1,
+			:right => @image[row][pixl + 1] = 1
+		}
 			if row == 0
 				if pixl == 0 
-					@image[row + 1][pixl] = 1
-					@image[row][pixl + 1] = 1
+					blur_action[:down] 
+					blur_action[:right]
 				elsif @image[pixl + 1].nil?
-					@image[row + 1][pixl] = 1
-					@image[row][pixl - 1] = 1
+					blur_action[:down]
+					blur_action[:left]
 				else
-					@image[row + 1][pixl] = 1
-					@image[row][pixl - 1] = 1
-					@image[row][pixl + 1] = 1
+					blur_action[:down]
+					blur_action[:right]
+					blur_action[:left]
 				end
 			elsif @image[row + 1].nil?
 				if pixl == 0 
-					@image[row - 1][pixl] = 1
-					@image[row][pixl + 1] = 1
-				elsif @image[row][pixl + 1].nil?
-					@image[row - 1][pixl] = 1
-					@image[row][pixl - 1] = 1
+					blur_action[:up]
+					blur_action[:right]
+				elsif @image[pixl + 1].nil?
+					blur_action[:up]
+					blur_action[:left]
 				else
-					@image[row - 1][pixl] = 1
-					@image[row][pixl - 1] = 1
-					@image[row][pixl + 1] = 1
+					blur_action[:up]
+					blur_action[:right]
+					blur_action[:left]
 				end
 			elsif pixl == 0
-				@image[row - 1][pixl] = 1
-				@image[row + 1][pixl] = 1
-				@image[row][pixl + 1] = 1
+				blur_action[:up]
+				blur_action[:down]
+				blur_action[:right]
 			elsif @image[row][pixl + 1].nil?
-				@image[row - 1][pixl] = 1
-				@image[row + 1][pixl] = 1
-				@image[row][pixl - 1] = 1
+				blur_action[:up]
+				blur_action[:down]
+				blur_action[:left]
 			else
-				@image[row - 1][pixl] = 1
-				@image[row + 1][pixl] = 1
-				@image[row][pixl - 1] = 1
-				@image[row][pixl + 1] = 1
+				blur_action[:up]
+				blur_action[:down]
+				blur_action[:right]
+				blur_action[:left]
 			end
 		end
 	end
 end
-
-
-image = ImageBlur.new([
-  [0, 0, 0, 0],
-  [0, 1, 0, 0],
-  [0, 0, 1, 0],
-  [0, 0, 0, 0]
-])
-
-image.locate_pixl
-image.blur_image
-image.output_image
-
 
 image = ImageBlur.new([
   [0, 0, 0, 0],
